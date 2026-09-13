@@ -1,0 +1,413 @@
+<!doctype html>
+<title>Audit d'Exposition Numérique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #ECEEE8;
+    --paper-raised: #E2E5DC;
+    --ink: #1E2620;
+    --ink-dim: #5B6459;
+    --line: #C9CFC2;
+    --accent: #A85A14;
+    --accent-ink: #FFFFFF;
+    --critical: #A63B2E;
+    --critical-bg: #F3E1DC;
+    --safe: #3F7A56;
+    --safe-bg: #DEEBE1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #15190F;
+      --paper-raised: #1D2318;
+      --ink: #E7E8E0;
+      --ink-dim: #9BA398;
+      --line: #333A2E;
+      --accent: #E0A458;
+      --accent-ink: #1B1503;
+      --critical: #E08277;
+      --critical-bg: #3A231F;
+      --safe: #8FC7A3;
+      --safe-bg: #1F3327;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #15190F;
+    --paper-raised: #1D2318;
+    --ink: #E7E8E0;
+    --ink-dim: #9BA398;
+    --line: #333A2E;
+    --accent: #E0A458;
+    --accent-ink: #1B1503;
+    --critical: #E08277;
+    --critical-bg: #3A231F;
+    --safe: #8FC7A3;
+    --safe-bg: #1F3327;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Public Sans', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    padding: 0 20px 64px;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  h1, h2, h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    text-wrap: balance;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  a { color: inherit; }
+
+  /* ---- header ---- */
+  header {
+    padding: 48px 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--ink-dim);
+  }
+  .brand strong { color: var(--ink); }
+
+  /* ---- hero ---- */
+  .hero {
+    padding: 40px 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 46px);
+    line-height: 1.12;
+    max-width: 15ch;
+  }
+  .hero p.lede {
+    font-size: 18px;
+    color: var(--ink-dim);
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* ---- report sample card ---- */
+  .report {
+    margin-top: 20px;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .report-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .report-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line);
+    gap: 12px;
+  }
+  .report-row:last-child { border-bottom: none; }
+  .report-row .label { font-size: 14.5px; }
+  .report-row .detail { font-size: 13px; color: var(--ink-dim); }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .chip.critical { background: var(--critical-bg); color: var(--critical); }
+  .chip.safe { background: var(--safe-bg); color: var(--safe); }
+
+  /* ---- sections ---- */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  section h2 { font-size: 26px; margin-bottom: 18px; }
+  section > .eyebrow { display: block; margin-bottom: 10px; }
+  section p { max-width: 62ch; }
+
+  /* ---- steps ---- */
+  .steps { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+  .step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .step:first-child { border-top: none; }
+  .step .num {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--accent);
+    font-size: 14px;
+    padding-top: 2px;
+  }
+  .step h3 { font-size: 17px; font-family: 'Public Sans', sans-serif; font-weight: 600; margin-bottom: 4px; }
+  .step p { margin: 0; color: var(--ink-dim); font-size: 14.5px; max-width: 54ch; }
+
+  /* ---- pricing ---- */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  @media (max-width: 640px) {
+    .tiers { grid-template-columns: 1fr; }
+  }
+  .tier {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--paper-raised);
+  }
+  .tier.featured { border-color: var(--accent); }
+  .tier .tname { font-family: 'Fraunces', serif; font-size: 19px; }
+  .tier .tprice {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 24px;
+    color: var(--accent);
+  }
+  .tier .tprice span { font-size: 13px; color: var(--ink-dim); font-family: 'Public Sans', sans-serif; }
+  .tier ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+  .tier li { font-size: 13.5px; color: var(--ink-dim); padding-left: 16px; position: relative; }
+  .tier li::before { content: "—"; position: absolute; left: 0; color: var(--line); }
+  .btn {
+    display: inline-block;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 11px 16px;
+    border-radius: 3px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn.solid { background: var(--accent); color: var(--accent-ink); }
+  .btn:hover { opacity: 0.82; }
+
+  /* ---- trust ---- */
+  .trust { display: flex; flex-direction: column; gap: 10px; }
+  .trust-row { display: flex; gap: 12px; align-items: baseline; font-size: 14.5px; }
+  .trust-row .k { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-dim); min-width: 92px; letter-spacing: 0.03em; }
+
+  /* ---- final cta ---- */
+  .cta-final {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .cta-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  footer {
+    padding: 32px 0 12px;
+    color: var(--ink-dim);
+    font-size: 12.5px;
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="brand"><strong>AUDIT</strong> / exposition numérique</div>
+    <div class="brand">Sur demande uniquement — jamais de démarchage</div>
+  </header>
+
+  <div class="hero">
+    <h1>Ce que n'importe qui peut trouver sur vous, en dix minutes.</h1>
+    <p class="lede">Un audit OSINT sur votre propre identité : fuites de données, comptes oubliés, informations recoupables. Vous recevez un rapport clair et une checklist pour reprendre le contrôle.</p>
+
+    <div class="report">
+      <div class="report-head">
+        <span class="eyebrow">Exemple de rapport — dossier « M. R. »</span>
+        <span class="mono" style="font-size:12px;color:var(--ink-dim)">score 6.5 / 10</span>
+      </div>
+      <div class="report-row">
+        <div>
+          <div class="label">Fuites de données</div>
+          <div class="detail">3 identifiants trouvés dans des fuites publiques</div>
+        </div>
+        <span class="chip critical">à corriger</span>
+      </div>
+      <div class="report-row">
+        <div>
+          <div class="label">Réseaux sociaux publics</div>
+          <div class="detail">2 comptes exposant nom complet + ville</div>
+        </div>
+        <span class="chip critical">à corriger</span>
+      </div>
+      <div class="report-row">
+        <div>
+          <div class="label">Comptes oubliés</div>
+          <div class="detail">1 forum inactif depuis 2016, encore actif</div>
+        </div>
+        <span class="chip critical">à corriger</span>
+      </div>
+      <div class="report-row">
+        <div>
+          <div class="label">Métadonnées photo</div>
+          <div class="detail">Aucune localisation exploitable détectée</div>
+        </div>
+        <span class="chip safe">rien à signaler</span>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <span class="eyebrow">Pourquoi</span>
+    <h2>Votre nom suffit à reconstituer beaucoup plus que vous ne pensez.</h2>
+    <p>Une fuite de données oubliée, un vieux compte encore public, une photo qui garde sa localisation : pris séparément ce sont des détails, recoupés ils dessinent une adresse, des habitudes, un entourage. C'est particulièrement sensible pour qui expose déjà son nom au public — avocat, thérapeute, créateur de contenu, freelance — ou pour qui traverse une période où être retrouvé pose un vrai risque.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Comment ça marche</span>
+    <h2>Quatre étapes, un rapport que vous pouvez suivre.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num mono">01</div>
+        <div>
+          <h3>Vous commandez sur vous-même</h3>
+          <p>Formulaire simple : les identifiants que vous autorisez à vérifier (nom, emails, pseudos). Rien n'est cherché sans votre accord explicite.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num mono">02</div>
+        <div>
+          <h3>La recherche</h3>
+          <p>Vérification des fuites de données connues, des réseaux sociaux publics, des comptes anciens, des métadonnées de vos photos publiques.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num mono">03</div>
+        <div>
+          <h3>Le rapport</h3>
+          <p>Un document clair : score d'exposition, détail par catégorie, checklist d'actions classées par priorité.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num mono">04</div>
+        <div>
+          <h3>Le nettoyage (en option)</h3>
+          <p>Sur le palier Accompagné, ces actions sont exécutées à votre place : suppression de comptes, demandes de retrait, activation de la double authentification.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Les offres</span>
+    <h2>Trois profondeurs d'audit.</h2>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tname">Essentiel</div>
+        <div class="tprice">59€</div>
+        <ul>
+          <li>Fuites de données connues</li>
+          <li>Réseaux sociaux publics</li>
+          <li>Comptes et traces oubliés</li>
+          <li>Rapport PDF priorisé</li>
+        </ul>
+        <a class="btn" href="#" onclick="orderMail('Essentiel', '59€'); return false;">Commander</a>
+      </div>
+      <div class="tier featured">
+        <div class="tname">Complet</div>
+        <div class="tprice">129€</div>
+        <ul>
+          <li>Tout l'Essentiel</li>
+          <li>Métadonnées de photos</li>
+          <li>Recherche d'image inversée</li>
+          <li>Recoupement d'informations exposées</li>
+          <li>Appel de restitution (20 min)</li>
+        </ul>
+        <a class="btn solid" href="#" onclick="orderMail('Complet', '129€'); return false;">Commander</a>
+      </div>
+      <div class="tier">
+        <div class="tname">Accompagné</div>
+        <div class="tprice">dès 249€</div>
+        <ul>
+          <li>Tout le Complet</li>
+          <li>Suppression de comptes assistée</li>
+          <li>Demandes d'opt-out data brokers</li>
+          <li>Activation guidée de la 2FA</li>
+        </ul>
+        <a class="btn" href="#" onclick="orderMail('Accompagné', 'à partir de 249€'); return false;">Commander</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Cadre</span>
+    <h2>Sur demande, confidentiel, sans engagement.</h2>
+    <div class="trust">
+      <div class="trust-row"><span class="k mono">CONSENTEMENT</span><span>L'audit ne porte que sur vous, et seulement après votre commande. Aucune recherche préalable, aucun démarchage.</span></div>
+      <div class="trust-row"><span class="k mono">CONFIDENTIALITÉ</span><span>Le rapport vous appartient. Les données de recherche sont supprimées après livraison.</span></div>
+      <div class="trust-row"><span class="k mono">DÉLAI</span><span>Rapport livré sous 5 jours ouvrés (Essentiel/Complet), sous 10 jours pour l'Accompagné.</span></div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <span class="eyebrow">Commencer</span>
+    <h2>Un audit, un rapport, un plan d'action.</h2>
+    <p>Pas de formulaire en ligne pour l'instant — écrivez-moi directement en précisant le palier souhaité, je réponds sous 24h.</p>
+    <div class="cta-actions">
+      <a class="btn solid" href="#" onclick="orderMail('Complet', '129€'); return false;">Écrire pour commander</a>
+    </div>
+  </section>
+
+  <footer>
+    Service indépendant, opt-in uniquement. Aucune information n'est collectée sur vous avant votre commande.
+  </footer>
+
+</div>
+
+<script>
+  function orderMail(tier, price) {
+    var subject = "Audit " + tier + " — commande";
+    var body = "Bonjour,\n\nJe souhaite commander l'audit " + tier + " (" + price + ").\n\nMon nom : \nLes identifiants à vérifier (email, pseudos, ville) : \n\nMerci !";
+    window.location.href = "mailto:alexandreanton.pro@proton.me?subject="
+      + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
+</script>
