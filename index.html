@@ -246,6 +246,24 @@
     border-top: 1px solid var(--line);
     margin-top: 12px;
   }
+
+  /* ---- contact fallback ---- */
+  .contact-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+  }
+  .contact-line .addr { color: var(--ink); }
+  .btn.copy {
+    font-size: 11.5px;
+    padding: 6px 10px;
+    border-color: var(--line-strong);
+    color: var(--ink-dim);
+  }
+  .btn.copy.copied { border-color: var(--safe); color: var(--safe); }
 </style>
 
 <div class="wrap">
@@ -258,6 +276,11 @@
   <div class="hero">
     <h1>Ce que n'importe qui peut trouver sur vous, en dix minutes.</h1>
     <p class="lede">Un audit OSINT sur votre propre identité : fuites de données, comptes oubliés, informations recoupables. Vous recevez un rapport clair et une checklist pour reprendre le contrôle.</p>
+
+    <div class="contact-line">
+      <span class="addr">Silen8T@proton.me</span>
+      <button class="btn copy" onclick="copyMail(this)">copier l'adresse</button>
+    </div>
 
     <div class="report">
       <div class="report-head">
@@ -389,6 +412,7 @@
     <p>Pas de formulaire en ligne pour l'instant — écrivez-moi directement en précisant le palier souhaité, je réponds sous 24h.</p>
     <div class="cta-actions">
       <a class="btn solid" href="#" onclick="orderMail('Complet', '129€'); return false;">Écrire pour commander</a>
+      <button class="btn copy" onclick="copyMail(this)">copier l'adresse : Silen8T@proton.me</button>
     </div>
   </section>
 
@@ -404,5 +428,26 @@
     var body = "Bonjour,\n\nJe souhaite commander l'audit " + tier + " (" + price + ").\n\nMon nom : \nLes identifiants à vérifier (email, pseudos, ville) : \n\nMerci !";
     window.location.href = "mailto:Silen8T@proton.me?subject="
       + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
+
+  function copyMail(btn) {
+    var mail = "Silen8T@proton.me";
+    var reset = function () {
+      btn.textContent = btn.dataset.label;
+      btn.classList.remove('copied');
+    };
+    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+    function done() {
+      btn.textContent = "adresse copiée !";
+      btn.classList.add('copied');
+      setTimeout(reset, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(mail).then(done).catch(function () {
+        window.prompt("Copiez l'adresse :", mail);
+      });
+    } else {
+      window.prompt("Copiez l'adresse :", mail);
+    }
   }
 </script>
