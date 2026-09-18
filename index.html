@@ -1,5 +1,5 @@
 <!doctype html>
-<title>Audit d'Exposition Numérique</title>
+<title>Check Phishing & Exposition Numérique</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -269,13 +269,13 @@
 <div class="wrap">
 
   <header>
-    <div class="brand"><strong>AUDIT</strong> / EXPOSITION NUMÉRIQUE</div>
+    <div class="brand"><strong>CHECK</strong> / PHISHING & EXPOSITION</div>
     <div class="brand">SUR DEMANDE UNIQUEMENT — JAMAIS DE DÉMARCHAGE</div>
   </header>
 
   <div class="hero">
-    <h1>Ce que n'importe qui peut trouver sur vous, en dix minutes.</h1>
-    <p class="lede">Un audit OSINT sur votre propre identité : fuites de données, comptes oubliés, informations recoupables. Vous recevez un rapport clair et une checklist pour reprendre le contrôle.</p>
+    <h1>Vous avez déjà pris un phishing, ou vous savez que vos comptes sont mal protégés ?</h1>
+    <p class="lede">Vérification concrète de votre exposition : mots de passe réutilisés, absence de 2FA, fuites de données, usurpation, comptes oubliés. Vous recevez un rapport clair et une checklist de durcissement pour corriger.</p>
 
     <div class="contact-line">
       <span class="addr">Silen8T@proton.me</span>
@@ -291,13 +291,13 @@
         <span class="rlabel">FUITES</span>
         <span class="status critical">à corriger</span>
         <span></span>
-        <span class="rdetail">3 identifiants trouvés dans des fuites publiques</span>
+        <span class="rdetail">3 identifiants trouvés dans des fuites publiques — mot de passe réutilisé sur 2 comptes actifs</span>
       </div>
       <div class="report-row">
-        <span class="rlabel">RÉSEAUX</span>
+        <span class="rlabel">2FA</span>
         <span class="status critical">à corriger</span>
         <span></span>
-        <span class="rdetail">2 comptes exposant nom complet + ville</span>
+        <span class="rdetail">Aucune double authentification sur la messagerie principale</span>
       </div>
       <div class="report-row">
         <span class="rlabel">COMPTES</span>
@@ -316,8 +316,8 @@
 
   <section>
     <span class="tag">Pourquoi</span>
-    <h2>Votre nom suffit à reconstituer beaucoup plus que vous ne pensez.</h2>
-    <p>Une fuite de données oubliée, un vieux compte encore public, une photo qui garde sa localisation : pris séparément ce sont des détails, recoupés ils dessinent une adresse, des habitudes, un entourage. C'est particulièrement sensible pour qui expose déjà son nom au public — avocat, thérapeute, créateur de contenu, freelance — ou pour qui traverse une période où être retrouvé pose un vrai risque.</p>
+    <h2>Un mot de passe réutilisé ou un compte oublié suffit à ouvrir la porte.</h2>
+    <p>Le phishing marche parce qu'il trouve une faille : un mot de passe recyclé sur trois sites, un compte sans 2FA, une fuite de données jamais traitée. C'est particulièrement sensible pour qui expose déjà son nom au public — avocat, thérapeute, créateur de contenu, freelance — où une compromission touche aussi vos clients ou votre réputation.</p>
   </section>
 
   <section>
@@ -363,24 +363,24 @@
         <div class="tname">Essentiel</div>
         <div class="tprice">59€</div>
         <ul>
-          <li>Fuites de données connues</li>
-          <li>Réseaux sociaux publics</li>
-          <li>Comptes et traces oubliés</li>
-          <li>Rapport PDF priorisé</li>
+          <li>Fuites de données touchant vos identifiants</li>
+          <li>Mots de passe réutilisés / absence de 2FA</li>
+          <li>Détection basique d'usurpation</li>
+          <li>Checklist de durcissement priorisée</li>
         </ul>
-        <a class="btn" href="#" onclick="orderMail('Essentiel', '59€'); return false;">Commander</a>
+        <a class="btn" href="#" onclick="order('Essentiel', '59€'); return false;">Commander</a>
       </div>
       <div class="tier featured">
         <div class="tname">Complet</div>
         <div class="tprice">129€</div>
         <ul>
           <li>Tout l'Essentiel</li>
-          <li>Métadonnées de photos</li>
-          <li>Recherche d'image inversée</li>
+          <li>Réseaux sociaux publics + comptes oubliés</li>
+          <li>Métadonnées de photos, image inversée</li>
           <li>Recoupement d'informations exposées</li>
           <li>Appel de restitution (20 min)</li>
         </ul>
-        <a class="btn solid" href="#" onclick="orderMail('Complet', '129€'); return false;">Commander</a>
+        <a class="btn solid" href="#" onclick="order('Complet', '129€'); return false;">Commander</a>
       </div>
       <div class="tier">
         <div class="tname">Accompagné</div>
@@ -391,9 +391,10 @@
           <li>Demandes d'opt-out data brokers</li>
           <li>Activation guidée de la 2FA</li>
         </ul>
-        <a class="btn" href="#" onclick="orderMail('Accompagné', 'à partir de 249€'); return false;">Commander</a>
+        <a class="btn" href="#" onclick="order('Accompagné', 'à partir de 249€'); return false;">Commander</a>
       </div>
     </div>
+    <p class="tag" style="margin-top:14px;">Paiement sécurisé via Lemon Squeezy — carte bancaire, facture automatique.</p>
   </section>
 
   <section>
@@ -402,27 +403,60 @@
     <div class="trust">
       <div class="trust-row"><span class="k mono">CONSENTEMENT</span><span>L'audit ne porte que sur vous, et seulement après votre commande. Aucune recherche préalable, aucun démarchage.</span></div>
       <div class="trust-row"><span class="k mono">CONFIDENTIALITÉ</span><span>Le rapport vous appartient. Les données de recherche sont supprimées après livraison.</span></div>
+      <div class="trust-row"><span class="k mono">PAIEMENT</span><span>Traité par Lemon Squeezy (facture automatique, carte bancaire) — aucune donnée de paiement ne transite par moi.</span></div>
+      <div class="trust-row"><span class="k mono">RÉSULTAT</span><span>Obligation de moyens : recherche exhaustive selon les méthodes de l'art. Un rapport sans anomalie critique est une livraison conforme, pas un échec — vous repartez avec la checklist de durcissement dans tous les cas.</span></div>
       <div class="trust-row"><span class="k mono">DÉLAI</span><span>Rapport livré sous 5 jours ouvrés (Essentiel/Complet), sous 10 jours pour l'Accompagné.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="tag">CGV</span>
+    <h2>Conditions générales de vente.</h2>
+    <p>Version courte lisible ici ; le détail complet est envoyé avec chaque commande.</p>
+    <div class="trust">
+      <div class="trust-row"><span class="k mono">OBJET</span><span>Vérification et documentation de l'exposition numérique du client sur sa propre identité, sur commande explicite du client uniquement.</span></div>
+      <div class="trust-row"><span class="k mono">OBLIGATION</span><span>Obligation de moyens, non de résultat. Absence de garantie d'exhaustivité ou de découverte. Aucun pouvoir de contrainte sur des tiers (impossible de forcer un site à supprimer une donnée).</span></div>
+      <div class="trust-row"><span class="k mono">DONNÉES</span><span>Les informations transmises pour la recherche sont utilisées uniquement pour la prestation, puis supprimées après livraison du rapport.</span></div>
+      <div class="trust-row"><span class="k mono">REMBOURSEMENT</span><span>Annulation possible avant le début de la recherche. Une fois la recherche engagée, le rapport livré (même sans anomalie critique) constitue une prestation exécutée et non remboursable, sauf non-conformité manifeste.</span></div>
+      <div class="trust-row"><span class="k mono">PAIEMENT</span><span>Transaction traitée par Lemon Squeezy, qui agit en tant que revendeur officiel (merchant of record) du service.</span></div>
     </div>
   </section>
 
   <section class="cta-final">
     <span class="tag">Commencer</span>
     <h2>Un audit, un rapport, un plan d'action.</h2>
-    <p>Pas de formulaire en ligne pour l'instant — écrivez-moi directement en précisant le palier souhaité, je réponds sous 24h.</p>
+    <p>Choisissez votre palier ci-dessus pour payer directement via Lemon Squeezy, ou passez par le formulaire si vous préférez d'abord poser une question.</p>
     <div class="cta-actions">
-      <a class="btn solid" href="#" onclick="orderMail('Complet', '129€'); return false;">Écrire pour commander</a>
+      <a class="btn solid" href="#" onclick="order('Complet', '129€'); return false;">Commander le palier Complet</a>
       <button class="btn copy" onclick="copyMail(this)">copier l'adresse : Silen8T@proton.me</button>
     </div>
   </section>
 
   <footer>
-    Service indépendant, opt-in uniquement. Aucune information n'est collectée sur vous avant votre commande.
+    Service indépendant, opt-in uniquement. Aucune information n'est collectée sur vous avant votre commande. Paiement traité par Lemon Squeezy.
   </footer>
 
 </div>
 
 <script>
+  // TODO: remplacer par les vrais liens de checkout Lemon Squeezy une fois les produits créés
+  // (Lemon Squeezy > Store > Products > "Copy checkout URL"). Tant que c'est vide, le bouton
+  // retombe sur le mail pré-rempli.
+  var LEMONSQUEEZY_LINKS = {
+    'Essentiel': '',
+    'Complet': '',
+    'Accompagné': ''
+  };
+
+  function order(tier, price) {
+    var lsUrl = LEMONSQUEEZY_LINKS[tier];
+    if (lsUrl) {
+      window.location.href = lsUrl;
+      return;
+    }
+    orderMail(tier, price);
+  }
+
   function orderMail(tier, price) {
     var subject = "Audit " + tier + " — commande";
     var body = "Bonjour,\n\nJe souhaite commander l'audit " + tier + " (" + price + ").\n\nMon nom : \nLes identifiants à vérifier (email, pseudos, ville) : \n\nMerci !";
