@@ -247,23 +247,27 @@
     margin-top: 12px;
   }
 
-  /* ---- contact fallback ---- */
-  .contact-line {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13.5px;
+  /* ---- contact form ---- */
+  .form-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 6px; max-width: 480px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-dim); letter-spacing: 0.03em; text-transform: uppercase; }
+  .field input, .field select, .field textarea {
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    padding: 10px 12px;
+    outline: none;
   }
-  .contact-line .addr { color: var(--ink); }
-  .btn.copy {
-    font-size: 11.5px;
-    padding: 6px 10px;
-    border-color: var(--line-strong);
-    color: var(--ink-dim);
-  }
-  .btn.copy.copied { border-color: var(--safe); color: var(--safe); }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 96px; font-family: inherit; }
+  .field-row { display: flex; gap: 10px; }
+  .field-row .field { flex: 1; }
+  .form-note { font-size: 12.5px; color: var(--ink-dim); }
+  .form-check { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--ink-dim); }
+  .form-check input { margin-top: 3px; }
 </style>
 
 <div class="wrap">
@@ -277,9 +281,8 @@
     <h1>Vous avez déjà pris un phishing, ou vous savez que vos comptes sont mal protégés ?</h1>
     <p class="lede">Vérification concrète de votre exposition : mots de passe réutilisés, absence de 2FA, fuites de données, usurpation, comptes oubliés. Vous recevez un rapport clair et une checklist de durcissement pour corriger.</p>
 
-    <div class="contact-line">
-      <span class="addr">Silen8T@proton.me</span>
-      <button class="btn copy" onclick="copyMail(this)">copier l'adresse</button>
+    <div class="cta-actions">
+      <a class="btn solid" href="#contact">Décrire ma situation</a>
     </div>
 
     <div class="report">
@@ -368,7 +371,7 @@
           <li>Détection basique d'usurpation</li>
           <li>Checklist de durcissement priorisée</li>
         </ul>
-        <a class="btn" href="#" onclick="order('Essentiel', '59€'); return false;">Commander</a>
+        <a class="btn" href="#contact" onclick="preselect('Essentiel')">Décrire ma situation</a>
       </div>
       <div class="tier featured">
         <div class="tname">Complet</div>
@@ -380,7 +383,7 @@
           <li>Recoupement d'informations exposées</li>
           <li>Appel de restitution (20 min)</li>
         </ul>
-        <a class="btn solid" href="#" onclick="order('Complet', '129€'); return false;">Commander</a>
+        <a class="btn solid" href="#contact" onclick="preselect('Complet')">Décrire ma situation</a>
       </div>
       <div class="tier">
         <div class="tname">Accompagné</div>
@@ -391,10 +394,10 @@
           <li>Demandes d'opt-out data brokers</li>
           <li>Activation guidée de la 2FA</li>
         </ul>
-        <a class="btn" href="#" onclick="order('Accompagné', 'à partir de 249€'); return false;">Commander</a>
+        <a class="btn" href="#contact" onclick="preselect('Accompagné')">Décrire ma situation</a>
       </div>
     </div>
-    <p class="tag" style="margin-top:14px;">Paiement sécurisé via Lemon Squeezy — carte bancaire, facture automatique.</p>
+    <p class="tag" style="margin-top:14px;">Aucun paiement demandé à ce stade — on échange d'abord sur votre situation.</p>
   </section>
 
   <section>
@@ -403,7 +406,7 @@
     <div class="trust">
       <div class="trust-row"><span class="k mono">CONSENTEMENT</span><span>L'audit ne porte que sur vous, et seulement après votre commande. Aucune recherche préalable, aucun démarchage.</span></div>
       <div class="trust-row"><span class="k mono">CONFIDENTIALITÉ</span><span>Le rapport vous appartient. Les données de recherche sont supprimées après livraison.</span></div>
-      <div class="trust-row"><span class="k mono">PAIEMENT</span><span>Traité par Lemon Squeezy (facture automatique, carte bancaire) — aucune donnée de paiement ne transite par moi.</span></div>
+      <div class="trust-row"><span class="k mono">PAIEMENT</span><span>Aucun paiement avant échange. Une fois votre situation et le palier validés ensemble, je vous envoie un lien de paiement sécurisé (Lemon Squeezy) — aucune donnée de carte ne transite par moi.</span></div>
       <div class="trust-row"><span class="k mono">RÉSULTAT</span><span>Obligation de moyens : recherche exhaustive selon les méthodes de l'art. Un rapport sans anomalie critique est une livraison conforme, pas un échec — vous repartez avec la checklist de durcissement dans tous les cas.</span></div>
       <div class="trust-row"><span class="k mono">DÉLAI</span><span>Rapport livré sous 5 jours ouvrés (Essentiel/Complet), sous 10 jours pour l'Accompagné.</span></div>
     </div>
@@ -418,70 +421,69 @@
       <div class="trust-row"><span class="k mono">OBLIGATION</span><span>Obligation de moyens, non de résultat. Absence de garantie d'exhaustivité ou de découverte. Aucun pouvoir de contrainte sur des tiers (impossible de forcer un site à supprimer une donnée).</span></div>
       <div class="trust-row"><span class="k mono">DONNÉES</span><span>Les informations transmises pour la recherche sont utilisées uniquement pour la prestation, puis supprimées après livraison du rapport.</span></div>
       <div class="trust-row"><span class="k mono">REMBOURSEMENT</span><span>Annulation possible avant le début de la recherche. Une fois la recherche engagée, le rapport livré (même sans anomalie critique) constitue une prestation exécutée et non remboursable, sauf non-conformité manifeste.</span></div>
-      <div class="trust-row"><span class="k mono">PAIEMENT</span><span>Transaction traitée par Lemon Squeezy, qui agit en tant que revendeur officiel (merchant of record) du service.</span></div>
+      <div class="trust-row"><span class="k mono">PAIEMENT</span><span>Demandé uniquement après échange préalable et accord sur le périmètre. Transaction alors traitée par Lemon Squeezy, qui agit en tant que revendeur officiel (merchant of record) du service.</span></div>
     </div>
   </section>
 
-  <section class="cta-final">
+  <section class="cta-final" id="contact">
     <span class="tag">Commencer</span>
-    <h2>Un audit, un rapport, un plan d'action.</h2>
-    <p>Choisissez votre palier ci-dessus pour payer directement via Lemon Squeezy, ou passez par le formulaire si vous préférez d'abord poser une question.</p>
-    <div class="cta-actions">
-      <a class="btn solid" href="#" onclick="order('Complet', '129€'); return false;">Commander le palier Complet</a>
-      <button class="btn copy" onclick="copyMail(this)">copier l'adresse : Silen8T@proton.me</button>
-    </div>
+    <h2>Décrivez votre situation, on échange.</h2>
+    <p>Pas de paiement à cette étape. Remplissez ce court formulaire, je reviens vers vous pour cadrer précisément ce qui peut être vérifié avant de proposer quoi que ce soit.</p>
+    <form class="form-grid" action="https://formspree.io/f/xqpaawwo" method="POST">
+      <div class="field-row">
+        <div class="field">
+          <label for="f-name">Prénom ou pseudo</label>
+          <input id="f-name" name="Prénom / pseudo" type="text" required>
+        </div>
+        <div class="field">
+          <label for="f-tier">Palier visé</label>
+          <select id="f-tier" name="Palier visé">
+            <option value="Essentiel">Essentiel — 59€</option>
+            <option value="Complet" selected>Complet — 129€</option>
+            <option value="Accompagné">Accompagné — dès 249€</option>
+            <option value="Je ne sais pas encore">Je ne sais pas encore</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-channel">Moyen de contact préféré</label>
+          <select id="f-channel" name="Moyen de contact préféré">
+            <option>Email</option>
+            <option>Signal</option>
+            <option>Telegram</option>
+            <option>Autre (précisez dans le message)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-handle">Coordonnée (adresse, pseudo…)</label>
+          <input id="f-handle" name="Coordonnée" type="text" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-msg">Votre situation</label>
+        <textarea id="f-msg" name="Message" required placeholder="Ce que vous voulez faire vérifier : email(s), pseudos, ville, contexte (ex. doute sur une fuite, préparation avant recherche d'emploi, etc.)"></textarea>
+      </div>
+      <label class="form-check">
+        <input type="checkbox" required>
+        Je comprends que l'audit ne portera que sur les informations que je fournis moi-même, et qu'aucune recherche n'est lancée avant accord explicite des deux côtés.
+      </label>
+      <div>
+        <button class="btn solid" type="submit">Envoyer</button>
+      </div>
+      <p class="form-note">Vos informations servent uniquement à cadrer l'échange. Rien n'est recherché avant votre accord sur un périmètre et un tarif.</p>
+    </form>
   </section>
 
   <footer>
-    Service indépendant, opt-in uniquement. Aucune information n'est collectée sur vous avant votre commande. Paiement traité par Lemon Squeezy.
+    Service indépendant, opt-in uniquement. Aucune information n'est collectée sur vous avant votre message ci-dessus, et aucune recherche n'est lancée avant votre accord explicite.
   </footer>
 
 </div>
 
 <script>
-  // TODO: remplacer par les vrais liens de checkout Lemon Squeezy une fois les produits créés
-  // (Lemon Squeezy > Store > Products > "Copy checkout URL"). Tant que c'est vide, le bouton
-  // retombe sur le mail pré-rempli.
-  var LEMONSQUEEZY_LINKS = {
-    'Essentiel': '',
-    'Complet': '',
-    'Accompagné': ''
-  };
-
-  function order(tier, price) {
-    var lsUrl = LEMONSQUEEZY_LINKS[tier];
-    if (lsUrl) {
-      window.location.href = lsUrl;
-      return;
-    }
-    orderMail(tier, price);
-  }
-
-  function orderMail(tier, price) {
-    var subject = "Audit " + tier + " — commande";
-    var body = "Bonjour,\n\nJe souhaite commander l'audit " + tier + " (" + price + ").\n\nMon nom : \nLes identifiants à vérifier (email, pseudos, ville) : \n\nMerci !";
-    window.location.href = "mailto:Silen8T@proton.me?subject="
-      + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-  }
-
-  function copyMail(btn) {
-    var mail = "Silen8T@proton.me";
-    var reset = function () {
-      btn.textContent = btn.dataset.label;
-      btn.classList.remove('copied');
-    };
-    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
-    function done() {
-      btn.textContent = "adresse copiée !";
-      btn.classList.add('copied');
-      setTimeout(reset, 2000);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(mail).then(done).catch(function () {
-        window.prompt("Copiez l'adresse :", mail);
-      });
-    } else {
-      window.prompt("Copiez l'adresse :", mail);
-    }
+  function preselect(tier) {
+    var sel = document.getElementById('f-tier');
+    if (sel) sel.value = tier;
   }
 </script>
