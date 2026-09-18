@@ -448,16 +448,16 @@
       <div class="field-row">
         <div class="field">
           <label for="f-channel">Moyen de contact préféré</label>
-          <select id="f-channel" name="Moyen de contact préféré">
-            <option>Email</option>
-            <option>Signal</option>
-            <option>Telegram</option>
-            <option>Autre (précisez dans le message)</option>
+          <select id="f-channel" name="Moyen de contact préféré" onchange="updateContactField()">
+            <option value="Email">Email</option>
+            <option value="Signal">Signal</option>
+            <option value="Telegram">Telegram</option>
+            <option value="Autre">Autre (précisez dans le message)</option>
           </select>
         </div>
         <div class="field">
-          <label for="f-handle">Coordonnée (adresse, pseudo…)</label>
-          <input id="f-handle" name="Coordonnée" type="text" required>
+          <label for="f-handle" id="f-handle-label">Adresse email</label>
+          <input id="f-handle" name="Coordonnée" type="email" required placeholder="vous@exemple.com">
         </div>
       </div>
       <div class="field">
@@ -485,5 +485,21 @@
   function preselect(tier) {
     var sel = document.getElementById('f-tier');
     if (sel) sel.value = tier;
+  }
+
+  var CONTACT_FIELD_CONFIG = {
+    'Email':   { label: 'Adresse email',        type: 'email', placeholder: 'vous@exemple.com' },
+    'Signal':  { label: 'Numéro Signal',         type: 'tel',   placeholder: '+33 6 12 34 56 78' },
+    'Telegram':{ label: 'Pseudo Telegram',        type: 'text',  placeholder: '@votrepseudo' },
+    'Autre':   { label: 'Votre coordonnée',       type: 'text',  placeholder: 'Précisez ici (et dans le message si besoin)' }
+  };
+
+  function updateContactField() {
+    var channel = document.getElementById('f-channel').value;
+    var cfg = CONTACT_FIELD_CONFIG[channel] || CONTACT_FIELD_CONFIG['Autre'];
+    document.getElementById('f-handle-label').textContent = cfg.label;
+    var input = document.getElementById('f-handle');
+    input.type = cfg.type;
+    input.placeholder = cfg.placeholder;
   }
 </script>
